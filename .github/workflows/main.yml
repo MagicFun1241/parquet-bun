@@ -21,8 +21,8 @@ jobs:
             arch: arm64
           - os: ubuntu-latest
             arch: amd64
-          - os: ubuntu-latest
-            arch: arm64
+          # - os: ubuntu-latest
+          #   arch: arm64
 
     runs-on: ${{ matrix.os }}
     steps:
