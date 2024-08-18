@@ -12,12 +12,16 @@ jobs:
       contents: write
     strategy:
       matrix:
-        os: [macos-latest]
+        os: [ubuntu-latest, macos-latest]
         arch: [amd64, arm64]
         include:
           - os: macos-latest
             arch: amd64
           - os: macos-latest
+            arch: arm64
+          - os: ubuntu-latest
+            arch: amd64
+          - os: ubuntu-latest
             arch: arm64
 
     runs-on: ${{ matrix.os }}
@@ -68,6 +72,8 @@ jobs:
     - name: Get package version
       id: get_version
       run: |
+        pwd
+        ls
         VERSION=$(jq -r .version package.json)
         echo "VERSION=$VERSION" >> $GITHUB_ENV
 
