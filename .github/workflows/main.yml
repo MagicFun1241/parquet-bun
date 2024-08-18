@@ -8,9 +8,17 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
     permissions:
       contents: write
+    strategy:
+      matrix:
+        arch: [amd64, arm64]
+        include:
+          - arch: amd64
+            runner: ubuntu-latest
+          - arch: arm64
+            runner: ubuntu-22.04-arm64
+    runs-on: ${{ matrix.runner }}
     steps:
     - uses: actions/checkout@v4
 
@@ -22,19 +30,16 @@ jobs:
     - name: Download Go modules
       run: cd native && go mod download
 
-    - name: Build Linux
+    - name: Build Linux ${{ matrix.arch }}
       run: |
         cd native
-        GOOS=linux GOARCH=amd64 go build -ldflags "-s" -o parquet-amd64.so -buildmode=c-shared . 
-        echo "amd64 built"
-        GOOS=linux GOARCH=arm64 go build -ldflags "-s" -o parquet-arm64.so -buildmode=c-shared .
-        echo "arm64 built"
+        GOOS=linux GOARCH=${{ matrix.arch }} go build -ldflags "-s" -o parquet-${{ matrix.arch }}.so -buildmode=c-shared . 
+        echo "${{ matrix.arch }} built"
 
-    - name: Build Darwin
+    - name: Build Darwin ${{ matrix.arch }}
       run: | 
         cd native
-        GOOS=darwin GOARCH=amd64 go build -ldflags "-s" -o parquet-amd64.dylib -buildmode=c-shared .
-        GOOS=darwin GOARCH=arm64 go build -ldflags "-s" -o parquet-arm64.dylib -buildmode=c-shared .
+        GOOS=darwin GOARCH=${{ matrix.arch }} go build -ldflags "-s" -o parquet-${{ matrix.arch }}.dylib -buildmode=c-shared .
 
     - name: Get package version
       id: get_version
