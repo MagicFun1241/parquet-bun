@@ -16,13 +16,9 @@ jobs:
         arch: [amd64, arm64]
         include:
           - os: macos-latest
-            arch: amd64
-          - os: macos-latest
             arch: arm64
           - os: ubuntu-latest
             arch: amd64
-          - os: ubuntu-latest
-            arch: arm64
 
     runs-on: ${{ matrix.os }}
     steps:
@@ -36,24 +32,26 @@ jobs:
     - name: Download Go modules
       run: cd native && go mod download
 
-    - name: Build Linux ${{ matrix.arch }}
+    - name: Build Linux
       if: startsWith(matrix.os, 'ubuntu')
       run: |
         cd native
-        CGO_ENABLED=1 GOOS=linux GOARCH=${{ matrix.arch }} go build -ldflags "-s" -o parquet-${{ matrix.arch }}.so -buildmode=c-shared .
+        CGO_ENABLED=1 GOOS=linux GOARCH=arm64 go build -ldflags "-s" -o parquet-arm64.so -buildmode=c-shared .
+        CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -ldflags "-s" -o parquet-amd64.so -buildmode=c-shared .
         echo "${{ matrix.arch }} built"
 
-    - name: Build Darwin ${{ matrix.arch }}
+    - name: Build Darwin
       if: startsWith(matrix.os, 'macos')
       run: |
         cd native
-        CGO_ENABLED=1 GOOS=darwin GOARCH=${{ matrix.arch }} go build -ldflags "-s" -o parquet-${{ matrix.arch }}.dylib -buildmode=c-shared .
+        CGO_ENABLED=1 GOOS=darwin GOARCH=arm64 go build -ldflags "-s" -o parquet-arm64.dylib -buildmode=c-shared .
+        CGO_ENABLED=1 GOOS=darwin GOARCH=amd64 go build -ldflags "-s" -o parquet-amd64.dylib -buildmode=c-shared .
         echo "${{ matrix.arch }} built"
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: build-artifacts-${{ matrix.os }}-${{ matrix.arch }}
+        name: build-artifacts-${{ matrix.os }}
         path: native/parquet-*.so,native/parquet-*.dylib
 
   release:
