@@ -12,13 +12,19 @@ jobs:
       contents: write
     strategy:
       matrix:
+        os: [ubuntu-latest, macos-latest]
         arch: [amd64, arm64]
         include:
-          - arch: amd64
-            runner: ubuntu-latest
-          - arch: arm64
-            runner: ubuntu-22.04-arm64
-    runs-on: ${{ matrix.runner }}
+          - os: ubuntu-latest
+            arch: amd64
+          - os: ubuntu-22.04-arm64
+            arch: arm64
+          - os: macos-latest
+            arch: amd64
+          - os: macos-latest
+            arch: arm64
+
+    runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
 
@@ -31,15 +37,18 @@ jobs:
       run: cd native && go mod download
 
     - name: Build Linux ${{ matrix.arch }}
+      if: startsWith(matrix.os, 'ubuntu')
       run: |
         cd native
-        GOOS=linux GOARCH=${{ matrix.arch }} go build -ldflags "-s" -o parquet-${{ matrix.arch }}.so -buildmode=c-shared . 
+        GOOS=linux GOARCH=${{ matrix.arch }} go build -ldflags "-s" -o parquet-${{ matrix.arch }}.so -buildmode=c-shared .
         echo "${{ matrix.arch }} built"
 
     - name: Build Darwin ${{ matrix.arch }}
-      run: | 
+      if: startsWith(matrix.os, 'macos')
+      run: |
         cd native
         GOOS=darwin GOARCH=${{ matrix.arch }} go build -ldflags "-s" -o parquet-${{ matrix.arch }}.dylib -buildmode=c-shared .
+        echo "${{ matrix.arch }} built"
 
     - name: Get package version
       id: get_version
@@ -49,7 +58,8 @@ jobs:
         echo "VERSION=$VERSION" >> $GITHUB_ENV
 
     - name: Create Release
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
       uses: ncipollo/release-action@v1
       with:
-        artifacts: "native/*.so,native/*.dylib,native/*.dll"
+        artifacts: "native/*.so,native/*.dylib"
         tag: v${{ env.VERSION }}
