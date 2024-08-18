@@ -16,9 +16,13 @@ jobs:
         arch: [amd64, arm64]
         include:
           - os: macos-latest
+            arch: amd64
+          - os: macos-latest
             arch: arm64
           - os: ubuntu-latest
             arch: amd64
+           - os: ubuntu-latest
+            arch: arm64
 
     runs-on: ${{ matrix.os }}
     steps:
