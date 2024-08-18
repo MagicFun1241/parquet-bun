@@ -12,13 +12,9 @@ jobs:
       contents: write
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [umacos-latest]
         arch: [amd64, arm64]
         include:
-          - os: ubuntu-latest
-            arch: amd64
-          - os: ubuntu-22.04-arm64
-            arch: arm64
           - os: macos-latest
             arch: amd64
           - os: macos-latest
@@ -40,14 +36,14 @@ jobs:
       if: startsWith(matrix.os, 'ubuntu')
       run: |
         cd native
-        GOOS=linux GOARCH=${{ matrix.arch }} go build -ldflags "-s" -o parquet-${{ matrix.arch }}.so -buildmode=c-shared .
+        CGO_ENABLED=1 GOOS=linux GOARCH=${{ matrix.arch }} go build -ldflags "-s" -o parquet-${{ matrix.arch }}.so -buildmode=c-shared .
         echo "${{ matrix.arch }} built"
 
     - name: Build Darwin ${{ matrix.arch }}
       if: startsWith(matrix.os, 'macos')
       run: |
         cd native
-        GOOS=darwin GOARCH=${{ matrix.arch }} go build -ldflags "-s" -o parquet-${{ matrix.arch }}.dylib -buildmode=c-shared .
+        CGO_ENABLED=1 GOOS=darwin GOARCH=${{ matrix.arch }} go build -ldflags "-s" -o parquet-${{ matrix.arch }}.dylib -buildmode=c-shared .
         echo "${{ matrix.arch }} built"
 
     - name: Get package version
