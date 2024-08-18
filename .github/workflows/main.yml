@@ -12,8 +12,8 @@ jobs:
       contents: write
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
-        arch: [amd64, arm64]
+        # os: [ubuntu-latest, macos-latest]
+        # arch: [amd64, arm64]
         include:
           - os: macos-latest
             arch: amd64
