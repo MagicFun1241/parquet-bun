@@ -12,11 +12,7 @@ jobs:
       contents: write
     strategy:
       matrix:
-        # os: [ubuntu-latest, macos-latest]
-        # arch: [amd64, arm64]
         include:
-          - os: macos-latest
-            arch: amd64
           - os: macos-latest
             arch: arm64
           - os: ubuntu-latest
@@ -47,8 +43,8 @@ jobs:
       if: startsWith(matrix.os, 'macos')
       run: |
         cd native
-        GOOS=darwin GOARCH=${{ matrix.arch }} go build -ldflags "-s" -o parquet-${{ matrix.arch }}.dylib -buildmode=c-shared .
-        echo "${{ matrix.arch }} built"
+        GOOS=darwin GOARCH=amd64 go build -ldflags "-s" -o parquet-amd64.dylib -buildmode=c-shared .
+        GOOS=darwin GOARCH=arm64 go build -ldflags "-s" -o parquet-arm64.dylib -buildmode=c-shared .
 
     - name: Upload Artifacts
       uses: actions/upload-artifact@v3
