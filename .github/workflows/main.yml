@@ -24,19 +24,18 @@ jobs:
 
     - name: Build Linux
       run: |
-        GOOS=linux GOARCH=amd64 cd native && go build -ldflags "-s" -o parquet-amd64.so -buildmode=c-shared .
-        GOOS=linux GOARCH=arm64 cd native && go build -ldflags "-s" -o parquet-arm64.so -buildmode=c-shared .
+        GOOS=linux GOARCH=amd64 go build -ldflags "-s" -o parquet-amd64.so -buildmode=c-shared .
+        GOOS=linux GOARCH=arm64 go build -ldflags "-s" -o parquet-arm64.so -buildmode=c-shared .
 
     - name: Build Darwin
       run: | 
-        GOOS=darwin GOARCH=amd64 cd native && go build -ldflags "-s" -o parquet-amd64.dylib -buildmode=c-shared .
-        GOOS=darwin GOARCH=arm64 cd native && go build -ldflags "-s" -o parquet-arm64.dylib -buildmode=c-shared .
+        GOOS=darwin GOARCH=amd64 go build -ldflags "-s" -o parquet-amd64.dylib -buildmode=c-shared .
+        GOOS=darwin GOARCH=arm64 go build -ldflags "-s" -o parquet-arm64.dylib -buildmode=c-shared .
 
     - name: Get package version
       id: get_version
       run: |
-        ls
-        pwd
+        cd ../
         VERSION=$(jq -r .version package.json)
         echo "VERSION=$VERSION" >> $GITHUB_ENV
 
