@@ -46,6 +46,23 @@ jobs:
         CGO_ENABLED=1 GOOS=darwin GOARCH=${{ matrix.arch }} go build -ldflags "-s" -o parquet-${{ matrix.arch }}.dylib -buildmode=c-shared .
         echo "${{ matrix.arch }} built"
 
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-artifacts-${{ matrix.os }}-${{ matrix.arch }}
+        path: native/parquet-*.so,native/parquet-*.dylib
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Download Artifacts
+      uses: actions/download-artifact@v3
+      with:
+        path: release
+
     - name: Get package version
       id: get_version
       run: |
@@ -56,5 +73,5 @@ jobs:
       if: github.event_name == 'push' && github.ref == 'refs/heads/main'
       uses: ncipollo/release-action@v1
       with:
-        artifacts: "native/*.so,native/*.dylib"
+        artifacts: "release/**"
         tag: v${{ env.VERSION }}
