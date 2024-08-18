@@ -24,11 +24,13 @@ jobs:
 
     - name: Build Linux
       run: |
+        cd native
         GOOS=linux GOARCH=amd64 go build -ldflags "-s" -o parquet-amd64.so -buildmode=c-shared .
         GOOS=linux GOARCH=arm64 go build -ldflags "-s" -o parquet-arm64.so -buildmode=c-shared .
 
     - name: Build Darwin
       run: | 
+        cd native
         GOOS=darwin GOARCH=amd64 go build -ldflags "-s" -o parquet-amd64.dylib -buildmode=c-shared .
         GOOS=darwin GOARCH=arm64 go build -ldflags "-s" -o parquet-arm64.dylib -buildmode=c-shared .
 
