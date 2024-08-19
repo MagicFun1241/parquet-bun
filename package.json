@@ -6,7 +6,8 @@
   "keywords": ["parquet", "bun"],
   "scripts": {
     "test": "bun test",
-    "benchmark": "bun src/testing.ts"
+    "benchmark": "bun src/testing.ts",
+    "postinstall": "bun src/scripts/postinstall.ts"
   },
   "devDependencies": {
     "@types/bun": "latest"
