@@ -17,6 +17,8 @@ jobs:
             arch: arm64
           - os: ubuntu-latest
             arch: amd64
+          - os: ubuntu-latest
+            arch: arm64
 
     runs-on: ${{ matrix.os }}
     steps:
@@ -31,11 +33,17 @@ jobs:
       run: cd native && go mod download
 
     - name: Build Linux
-      if: startsWith(matrix.os, 'ubuntu')
+      if: startsWith(matrix.os, 'ubuntu') && && !startsWith(matrix.arch, 'arm')
       run: |
         cd native
         export CGO_ENABLED=1
-        GOOS=linux GOARCH=${{ matrix.arch }} go build -ldflags "-s" -o parquet-${{ matrix.arch }}.so -buildmode=c-shared .
+        GOOS=linux GOARCH=amd64 go build -ldflags "-s" -o parquet-arm64.so -buildmode=c-shared .
+
+    - name: Build Linux Arm64
+      if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.arch, 'arm')
+      run: |
+        cd native
+        export CGO_ENABLED=1
         GOOS=linux GOARCH=arm64 go build -ldflags "-s" -o parquet-arm64.so -buildmode=c-shared .
        
     - name: Build Darwin
