@@ -13,8 +13,8 @@ jobs:
     strategy:
       matrix:
         include:
-          #- os: macos-latest
-          #  arch: arm64
+          - os: macos-latest
+            arch: arm64
           - os: ubuntu-latest
             arch: amd64
           # - os: ubuntu-latest
@@ -37,19 +37,14 @@ jobs:
       run: |
         cd native
         export CGO_ENABLED=1
-        export CC="gcc"
-        export CXX="g++"
         GOOS=linux GOARCH=${{ matrix.arch }} go build -ldflags "-s" -o parquet-${{ matrix.arch }}.so -buildmode=c-shared .
         echo "${{ matrix.arch }} built"
-        GOOS=darwin GOARCH=amd64 go build -ldflags "-s" -o parquet-amd64.dylib -buildmode=c-shared .
        
     - name: Build Darwin
       if: startsWith(matrix.os, 'macos')
       run: |
         cd native
         export CGO_ENABLED=1
-        export CC="gcc"
-        export CXX="g++"
         GOOS=darwin GOARCH=amd64 go build -ldflags "-s" -o parquet-amd64.dylib -buildmode=c-shared .
         GOOS=darwin GOARCH=arm64 go build -ldflags "-s" -o parquet-arm64.dylib -buildmode=c-shared .
 
