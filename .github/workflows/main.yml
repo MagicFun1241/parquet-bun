@@ -44,6 +44,7 @@ jobs:
       run: |
         cd native
         export CGO_ENABLED=1
+        export CC=aarch64-linux-gnu-gcc
         GOOS=linux GOARCH=arm64 go build -ldflags "-s" -o parquet-arm64.so -buildmode=c-shared .
        
     - name: Build Darwin
