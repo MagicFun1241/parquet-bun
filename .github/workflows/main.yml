@@ -33,11 +33,11 @@ jobs:
       run: cd native && go mod download
 
     - name: Build Linux
-      if: startsWith(matrix.os, 'ubuntu') && && !startsWith(matrix.arch, 'arm')
+      if: startsWith(matrix.os, 'ubuntu') && !startsWith(matrix.arch, 'arm')
       run: |
         cd native
         export CGO_ENABLED=1
-        GOOS=linux GOARCH=amd64 go build -ldflags "-s" -o parquet-arm64.so -buildmode=c-shared .
+        GOOS=linux GOARCH=amd64 go build -ldflags "-s" -o parquet-amd64.so -buildmode=c-shared .
 
     - name: Build Linux Arm64
       if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.arch, 'arm')
