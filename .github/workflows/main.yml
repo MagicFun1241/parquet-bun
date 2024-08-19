@@ -107,4 +107,4 @@ jobs:
         echo "registry=https://registry.npmjs.org/" >> .npmrc
         echo email=${{ secrets.EMAIL }} >> .npmrc
         echo always-auth=true >> .npmrc
-        bunx npm publish --provenance --access public
+        bunx npm publish --access public
