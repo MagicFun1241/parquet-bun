@@ -101,6 +101,8 @@ jobs:
     - uses: oven-sh/setup-bun@v2
 
     - run: | 
+        export NPM_TOKEN=${{ secrets.NPM_TOKEN }}
         echo "//registry.npmjs.org/:_auth=${{ secrets.NPM_TOKEN }}" >> .npmrc
         echo email=${{ secrets.EMAIL }} >> .npmrc
-        bunx npm publish
+        echo always-auth=true >> .npmrc
+        bunx npm publish --access public
