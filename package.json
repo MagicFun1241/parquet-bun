@@ -1,8 +1,13 @@
 {
   "name": "parquet-bun",
   "module": "src/index.ts",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "type": "module",
+  "keywords": ["parquet", "bun"],
+  "scripts": {
+    "test": "bun test",
+    "benchmark": "bun src/testing.ts"
+  },
   "devDependencies": {
     "@types/bun": "latest"
   },
