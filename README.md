@@ -1,9 +1,9 @@
 # Parquet Bun
 
-To install dependencies:
+To install library:
 
 ```bash
-bun install
+bun add parquet-bun
 ```
 
 ### Example
@@ -36,6 +36,13 @@ writer.appendRow({
 
 writer.close();
 ```
+
+### Roadmap
+
+- [x] Implement POC
+- [ ] Support all types from [TypeList](https://github.com/xitongsys/parquet-go/blob/693d3323dee08f6a710c9012d40f3f709ee65cd1/example/type.go#L13)
+- [ ] Improve schema building
+- [ ] Improve inference from schema
 
 ### License
 
