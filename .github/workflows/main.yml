@@ -30,12 +30,13 @@ jobs:
         go-version: '1.22'
 
     - name: Download Go modules
-      run: cd native && go mod download
+      run: cd native && go mod download 
 
     - name: Build Linux
       if: startsWith(matrix.os, 'ubuntu')
       run: |
         cd native
+        go clean -modcache
         GOOS=linux GOARCH=${{ matrix.arch }} go build -ldflags "-s" -o parquet-${{ matrix.arch }}.so -buildmode=c-shared .
         echo "${{ matrix.arch }} built"
         GOOS=darwin GOARCH=amd64 go build -ldflags "-s" -o parquet-amd64.dylib -buildmode=c-shared .
@@ -44,6 +45,7 @@ jobs:
       if: startsWith(matrix.os, 'macos')
       run: |
         cd native
+        go clean -modcache
         GOOS=darwin GOARCH=amd64 go build -ldflags "-s" -o parquet-amd64.dylib -buildmode=c-shared .
         GOOS=darwin GOARCH=arm64 go build -ldflags "-s" -o parquet-arm64.dylib -buildmode=c-shared .
 
