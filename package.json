@@ -1,9 +1,14 @@
 {
   "name": "parquet-bun",
   "module": "src/index.ts",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "type": "module",
   "keywords": ["parquet", "bun"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MagicFun1241/parquet-bun"
+  },
   "scripts": {
     "test": "bun test",
     "benchmark": "bun src/testing.ts",
