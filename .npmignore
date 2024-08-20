@@ -1,8 +1,7 @@
 /native
+/src
 
 /.github
 
 bun.lockb
 package-lock.json
-
-/src/testing.ts

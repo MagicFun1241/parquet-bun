@@ -1,7 +1,8 @@
 {
   "name": "parquet-bun",
-  "module": "src/index.ts",
-  "version": "1.0.8",
+  "module": "dist/index.cjs",
+  "types": "dist/index.d.cts",
+  "version": "1.0.9",
   "type": "module",
   "keywords": ["parquet", "bun"],
   "license": "MIT",
@@ -10,14 +11,16 @@
     "url": "https://github.com/MagicFun1241/parquet-bun"
   },
   "scripts": {
+    "build": "tsup src/index.ts",
     "test": "bun test",
     "benchmark": "bun src/testing.ts",
-    "postinstall": "bun src/scripts/postinstall.ts"
+    "postinstall": "bun dist/postinstall.ts"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "tsup": "^8.2.4"
   },
   "peerDependencies": {
-    "typescript": "^5.0.0"
+    "typescript": "^5.5.4"
   }
 }
