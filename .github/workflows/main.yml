@@ -93,7 +93,7 @@ jobs:
         echo "VERSION=$VERSION" >> $GITHUB_ENV
         
         GLIBC_VERSION=$(ldd release/build-artifacts-ubuntu-latest-amd64/parquet-amd64.so | grep 'libc.so.6' | awk '{print $3}' | xargs strings | grep GLIBC)
-        echo $GLIBC_VERSION
+        echo "Supported glibc versions $GLIBC_VERSION"
         
         {
             echo 'GLIBC_VERSION<<EOF'
