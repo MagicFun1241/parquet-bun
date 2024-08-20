@@ -1,5 +1,5 @@
-import * as ffi from './core/ffi';
-import * as types from './core/native';
+import * as ffi from '@/core/ffi';
+import * as types from '@/core/native';
 
 type NativeType<T> = {
     native: T;
@@ -10,6 +10,9 @@ type SchemaProperty = (types.ByteArray & NativeType<string>)
     | (types.Int64 & NativeType<number>)
     | (types.Int32 & NativeType<number>)
     | (types.Float & NativeType<number>)
+    | (types.Double & NativeType<number>)
+    | (types.Map & NativeType<Map<string, any>>)
+    | (types.List & NativeType<any[]>)
     | (types.Boolean & NativeType<boolean>);
 
 export function openFile<T extends Record<string, SchemaProperty['native']>>(
@@ -41,10 +44,12 @@ export function openFile<T extends Record<string, SchemaProperty['native']>>(
 
                 if (value == null) {
                     ffi.appendNull(instance);
-                    return;
+                    continue;
                 }
 
-                switch (schema[key].type) {
+                const typeName = schema[key].type;
+
+                switch (typeName) {
                     case 'BYTE_ARRAY':
                     case 'FIXED_LEN_BYTE_ARRAY':
                         ffi.appendString(instance, value as string);
@@ -63,6 +68,8 @@ export function openFile<T extends Record<string, SchemaProperty['native']>>(
                         break;
 
                     default:
+                        console.log('unsupported type "%s"', typeName);
+
                         ffi.appendNull(instance);
                         break;
                 }
@@ -75,3 +82,5 @@ export function openFile<T extends Record<string, SchemaProperty['native']>>(
         },
     };
 }
+
+export * from '@/core/native';

@@ -1,4 +1,4 @@
-import {openFile} from "./index";
+import {openFile} from "@/index";
 
 console.time('ffi');
 
