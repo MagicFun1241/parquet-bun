@@ -62,7 +62,8 @@ jobs:
       run: |
         cd native
         go build -ldflags "-s" -o parquet-arm64.so -buildmode=c-shared .
-        GOARCH=amd64 go build -ldflags "-s" -o parquet-amd64.dll -buildmode=c-shared .
+        $Env:GOARCH = "amd64"
+        go build -ldflags "-s" -o parquet-amd64.dll -buildmode=c-shared .
        
     - name: Build Darwin
       if: startsWith(matrix.os, 'macos')
