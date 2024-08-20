@@ -83,8 +83,7 @@ jobs:
         VERSION=$(jq -r .version package.json)
         echo "VERSION=$VERSION" >> $GITHUB_ENV
         
-        ls ./release
-        GLIBC_VERSION=$(ldd -R ./release parquet-amd64)
+        GLIBC_VERSION=$(ldd ./release/build-artifacts-ubuntu-latest-amd64/parquet-amd64.so)
         echo $GLIBC_VERSION
         
         echo "GLIBC_VERSION=$GLIBC_VERSION" >> $GITHUB_ENV
