@@ -61,7 +61,7 @@ jobs:
         CGO_ENABLED: 1
       run: |
         cd native
-        go build -ldflags "-s" -o parquet-arm64.so -buildmode=c-shared .
+        go build -ldflags "-s" -o parquet-arm64.dll -buildmode=c-shared .
         $Env:GOARCH = "amd64"
         go build -ldflags "-s" -o parquet-amd64.dll -buildmode=c-shared .
        
