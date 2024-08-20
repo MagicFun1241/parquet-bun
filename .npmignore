@@ -4,3 +4,5 @@
 
 bun.lockb
 package-lock.json
+
+/src/testing.ts

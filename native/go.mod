@@ -1,6 +1,6 @@
 module bun-parquet
 
-go 1.22.3
+go 1.21
 
 require (
 	github.com/xitongsys/parquet-go v1.6.2
