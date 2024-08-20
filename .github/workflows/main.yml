@@ -86,8 +86,11 @@ jobs:
         GLIBC_VERSION="$(ldd release/build-artifacts-ubuntu-latest-amd64/parquet-amd64.so)"
         echo $GLIBC_VERSION
         
-        echo GLIBC_VERSION="$GLIBC_VERSION" >> $GITHUB_ENV
-        
+        {
+            echo 'GLIBC_VERSION<<EOF'
+            echo $GLIBC_VERSION
+            echo EOF
+        } >> "$GITHUB_ENV"
 
     - name: Create Release
       if: github.event_name == 'push' && github.ref == 'refs/heads/main'
