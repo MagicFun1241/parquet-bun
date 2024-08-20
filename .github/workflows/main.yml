@@ -130,7 +130,7 @@ jobs:
     - run: |
         bun install --ignore-scripts --frozen-lockfile
         bun run build
-        cp src/postinstall.ts dist
+        cp src/scripts/postinstall.ts dist
 
     - run: | 
         export NPM_TOKEN=${{ secrets.NPM_TOKEN }}
