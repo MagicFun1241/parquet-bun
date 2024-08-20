@@ -1,7 +1,7 @@
 {
   "name": "parquet-bun",
   "module": "src/index.ts",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "type": "module",
   "keywords": ["parquet", "bun"],
   "scripts": {
