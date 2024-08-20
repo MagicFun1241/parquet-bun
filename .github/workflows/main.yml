@@ -82,6 +82,12 @@ jobs:
       run: |
         VERSION=$(jq -r .version package.json)
         echo "VERSION=$VERSION" >> $GITHUB_ENV
+        
+        GLIBC_VERSION=$(ldd release/parquet-amd64.so)
+        echo $GLIBC_VERSION
+        
+        echo "GLIBC_VERSION=$GLIBC_VERSION" >> $GITHUB_ENV
+        
 
     - name: Create Release
       if: github.event_name == 'push' && github.ref == 'refs/heads/main'
