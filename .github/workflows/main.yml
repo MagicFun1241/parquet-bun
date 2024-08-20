@@ -20,6 +20,8 @@ jobs:
             arch: amd64
           - os: ubuntu-latest
             arch: arm64
+          - os: windows-latest
+            arch: arm64
     steps:
     - uses: actions/checkout@v4
 
@@ -40,7 +42,6 @@ jobs:
       run: |
         cd native
         go build -ldflags "-s" -o parquet-amd64.so -buildmode=c-shared .
-        GOOS=windows go build -ldflags "-s" -o parquet-amd64.dll -buildmode=c-shared .
 
     - name: Build Linux Arm64
       if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.arch, 'arm')
@@ -53,7 +54,15 @@ jobs:
         sudo apt-get install -y gcc-aarch64-linux-gnu
         cd native
         go build -ldflags "-s" -o parquet-arm64.so -buildmode=c-shared .
-        GOOS=windows go build -ldflags "-s" -o parquet-arm64.dll -buildmode=c-shared .
+
+    - name: Build Windows
+      if: startsWith(matrix.os, 'windows')
+      env:
+        CGO_ENABLED: 1
+      run: |
+        cd native
+        go build -ldflags "-s" -o parquet-arm64.so -buildmode=c-shared .
+        GOARCH=amd64 go build -ldflags "-s" -o parquet-amd64.dll -buildmode=c-shared .
        
     - name: Build Darwin
       if: startsWith(matrix.os, 'macos')
