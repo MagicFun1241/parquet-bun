@@ -84,7 +84,7 @@ jobs:
         echo "VERSION=$VERSION" >> $GITHUB_ENV
         
         ls ./release
-        GLIBC_VERSION=$(ldd ./release/parquet-amd64.so)
+        GLIBC_VERSION=$(ldd -R ./release parquet-amd64)
         echo $GLIBC_VERSION
         
         echo "GLIBC_VERSION=$GLIBC_VERSION" >> $GITHUB_ENV
