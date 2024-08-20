@@ -3,7 +3,7 @@ import {dlopen, FFIType, suffix} from "bun:ffi";
 import {existsSync} from "node:fs";
 import {join} from 'node:path';
 
-import {isBuilding} from "@/lib/helpers";
+import {isBuilding} from "@/core/helpers";
 
 const {
     cstring,
@@ -13,10 +13,6 @@ const {
 } = FFIType;
 
 const path = resolveLocation();
-if (!isBuilding) {
-    console.log();
-    console.log('parquet location', path);
-}
 
 function resolveLocation(): string {
     const name = `parquet.${suffix}`;
