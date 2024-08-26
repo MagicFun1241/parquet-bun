@@ -1,4 +1,5 @@
 # Parquet Bun
+> Basic implementation of Parquet file format for Bun
 
 To install library:
 
